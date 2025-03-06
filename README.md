@@ -1,5 +1,6 @@
 # uniMERNet_pic
 基于UniMERNet开发的截图识别小工具  
+  
 action_chip.py实现截图程序，截图之后右键点击截图区域，保存至./asset/test_imgs文件夹。若本次截图不识别直接退出，会识别上次图片输出。等之后可能会改
 
 tuopan.py实现托盘常驻程序，使用热键`` ctrl+shift+c``调用截图
