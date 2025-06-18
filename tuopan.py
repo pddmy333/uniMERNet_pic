@@ -7,9 +7,15 @@ import os
 import sys
 import time
 from pynput import keyboard
+import demo
+import tkinter as tk
+import act_chip_2
 
 root_path = os.path.abspath(os.getcwd())
+image_path = os.path.join(root_path, 'asset/test_imgs', 'screenshot.png')
+config_path = os.path.join(root_path, "configs/demo.yaml")
 logo_path = os.path.join(root_path, 'asset/images', 'modelscope_logo.png')
+
 
 # 在模块级别定义全局变量
 icon = None
@@ -19,16 +25,27 @@ current_keys = set()
 HOTKEY_COMBO = {keyboard.Key.ctrl, keyboard.Key.shift, keyboard.KeyCode.from_char('c')}
 
 
-# 定义快捷键触发的回调函数
+# 定义快捷键触发的回调函数 修改此函数内容改成函数调用形式
 def on_activate():
     print("快捷键触发！执行任务...")
-    # 在这里运行另一个 Python 程序
-    try:
-        # 替换为你要运行的 Python 脚本路径
-        subprocess.Popen(["python", "action_chip.py"])
-        print("另一个 Python 程序已启动")
-    except Exception as e:
-        print(f"启动另一个 Python 程序失败: {e}")
+    act = act_chip_2.action_chip(image_path)
+
+    processor = demo.ImageProcessor(config_path)
+
+    latex_code = processor.process_single_image(image_path)
+
+    # 创建识别窗口
+    rt_1 = tk.Tk()
+    rt_1.title("识别")  # 设置窗口标题
+    rt_1.geometry("300x200")  # 设置窗口大小
+
+    # 创建一个 Label 控件，用于显示文本
+    text = tk.Text(rt_1, font=("Arial", 16))
+    text.pack(fill=tk.BOTH, expand=True)  # 使 Text 控件填充整个窗口
+    text.insert(tk.END, latex_code)
+    rt_1.mainloop()
+
+    print(latex_code)
 
 
 # # 注册快捷键（例如 Ctrl+Shift+A）
